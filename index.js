@@ -1,11 +1,12 @@
-const jsonServer = require("json-server"); // importing json-server library
+const jsonServer = require("json-server"); 
+const bodyParser = require("body-parser"); 
 const server = jsonServer.create();
 const router = jsonServer.router("db.json");
 const middlewares = jsonServer.defaults();
 const port = process.env.PORT || 8080; //  choose port from here like 8080, 3001
 
 server.use(middlewares);
-server.use(router);
+server.use(bodyParser.json()); // using bodyParser to parse JSON data
 
 server.use(async (req, res, next) => {
     await new Promise((res) => {
@@ -43,5 +44,6 @@ server.use((req, res, next) => {
     next();
 });
 
-server.listen(port);
+server.use(router); // make sure to keep this line below other routes
 
+server.listen(port);
