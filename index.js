@@ -2,7 +2,7 @@ const jsonServer = require("json-server"); // importing json-server library
 const server = jsonServer.create();
 const router = jsonServer.router("db.json");
 const middlewares = jsonServer.defaults();
-const port = process.env.PORT || 8080; //  chose port from here like 8080, 3001
+const port = 8080; //  chose port from here like 8080, 3001
 
 server.use(middlewares);
 server.use(router);
@@ -17,7 +17,7 @@ server.use(async (req, res, next) => {
 server.post('/login', (req, res) => {
     try {
         const { username, password } = req.body;
-        const db = JSON.parse(fs.readFileSync(path.resolve(__dirname, 'db.json'), 'UTF-8'));
+        const db = JSON.parse(fs.readFileSync(path.resolve("db.json"), 'UTF-8'));
         const { users = [] } = db;
 
         const userFromBd = users.find(
