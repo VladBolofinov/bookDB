@@ -10,7 +10,7 @@ server.use(bodyParser.json()); // using bodyParser to parse JSON data
 
 server.use(async (req, res, next) => {
     await new Promise((res) => {
-        setTimeout(res, 3000);
+        setTimeout(res, 300);
     });
     next();
 });
