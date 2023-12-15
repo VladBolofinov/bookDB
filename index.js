@@ -15,6 +15,34 @@ server.use(async (req, res, next) => {
     next();
 });
 
+server.post('/register', (req, res) => {
+    try {
+        const { username, password } = req.body;
+        const db = require("./db.json");
+        const { users = [] } = db;
+
+        // Проверяем, не существует ли уже пользователь с таким именем
+        const existingUser = users.find((user) => user.username === username);
+        if (existingUser) {
+            return res.status(400).json({ message: 'Username already exists' });
+        }
+
+        // Создаем нового пользователя и добавляем его в базу данных
+        const newUser = { username, password };
+        users.push(newUser);
+
+        // Перезаписываем файл с базой данных с учетом нового пользователя
+        const fs = require("fs");
+        fs.writeFileSync("db.json", JSON.stringify({ users }));
+
+        return res.json(newUser);
+    } catch (e) {
+        console.log(e);
+        return res.status(500).json({ message: e.message });
+    }
+});
+
+
 server.post('/login', (req, res) => {
     try {
         const { username, password } = req.body;
